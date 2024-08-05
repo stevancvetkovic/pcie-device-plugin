@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-pcie-device
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-pcie-device
+  template:
+    metadata:
+      labels:
+        app: test-pcie-device
+    spec:
+      containers:
+      - name: test-container
+        image: alpine:3.20.2
+        command:
+          - /bin/sh
+          - "-c"
+          - "sleep 60m"
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            pcie.com/device: "1"
+            cpu: 100m
+            memory: 10M

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: pcie-device-plugin
+spec:
+  selector:
+    matchLabels:
+      name: pcie-device-plugin
+  template:
+    metadata:
+      labels:
+        name: pcie-device-plugin
+    spec:
+      containers:
+      - name: pcie-device-plugin
+        image: stevancvetkovic/pcie-device-plugin:v0.0.0-stevan
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: device-plugin
+          mountPath: /var/lib/kubelet/device-plugins
+        securityContext:
+          privileged: true
+      volumes:
+      - name: device-plugin
+        hostPath:
+          path: /var/lib/kubelet/device-plugins

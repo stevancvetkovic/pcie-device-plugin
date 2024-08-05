@@ -1,0 +1,9 @@
+apiVersion: webapp.my.domain/v1
+kind: NodeLabeler
+metadata:
+  labels:
+    app.kubernetes.io/name: nodelabeler
+    app.kubernetes.io/managed-by: kustomize
+  name: nodelabeler-sample
+spec:
+  # TODO(user): Add fields here

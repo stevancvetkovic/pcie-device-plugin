@@ -1,0 +1,79 @@
+version: '3'
+
+env:
+  IMAGE_REGISTRY: docker.io
+  IMAGE_REGISTRY_PREFIX: stevancvetkovic
+  IMAGE_NAME: pcie-device-plugin
+
+tasks:
+  desc: Format Go code
+  fmt:
+    cmds:
+      - go fmt .
+
+  tidy:
+    desc: Update Go dependencies
+    cmds:
+      - go mod tidy
+
+  build:
+    desc: Run Go build
+    cmds:
+      - mkdir bin
+      - go build -o bin/pcie-device-plugin main.go
+
+  test:
+    desc: Run Go unit tests
+    cmds:
+      - go test
+
+  test-coverage:
+    desc: Run Go test coverage
+    deps:
+      - test
+      - clean
+    cmds:
+      - mkdir out
+      - go test -mod=readonly -coverpkg=. -coverprofile out/coverage.out .
+      - go tool cover -html=out/coverage.out -o out/coverage.html
+      - go tool cover -func=out/coverage.out -o out/coverage.txt
+
+  clean:
+    desc: Delete ./bin and ./out directories
+    cmds:
+      - rm -rf ./bin ./out
+
+  docker-login:
+    desc: Push Docker image to public Dockerhub
+    cmds:
+      - docker login
+
+  docker-build:
+    desc: Build Docker image
+    vars:
+      IMAGE_VERSION:
+        sh: 'if [[ "{{.PROFILE}}" == "ci" ]]; then echo "{{.IMAGE_VERSION}}"; else echo "v0.0.0-$USER"; fi'
+    cmds:
+      - docker build -t {{.IMAGE_REGISTRY}}/{{.IMAGE_REGISTRY_PREFIX}}/{{.IMAGE_NAME}}:{{.IMAGE_VERSION}} .
+
+  docker-push:
+    desc: Push Docker image to public Dockerhub
+    deps:
+      - docker-build
+    vars:
+      IMAGE_VERSION:
+        sh: 'if [[ "{{.PROFILE}}" == "ci" ]]; then echo "{{.IMAGE_VERSION}}"; else echo "v0.0.0-$USER"; fi'
+    cmds:
+      - docker push {{.IMAGE_REGISTRY}}/{{.IMAGE_REGISTRY_PREFIX}}/{{.IMAGE_NAME}}:{{.IMAGE_VERSION}}
+
+  deploy:
+    desc: Deploy PCIe device plugin as DaemonSet
+    cmds:
+      - kubectl create namespace builders --dry-run=client -o yaml | kubectl apply -f -
+      - kubectl -n builders apply -f manifest.yml
+
+  deploy-sample:
+      desc: Deploy sample Alpine Linux container
+      cmds:
+        - kubectl create namespace builders --dry-run=client -o yaml | kubectl apply -f -
+        - kubectl -n builders apply -f sample/alpine.yml
