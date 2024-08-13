@@ -43,6 +43,11 @@ tasks:
     cmds:
       - rm -rf ./bin ./out
 
+  dirty:
+    desc: Fail if there are uncommited changes
+    cmds:
+      - git diff --exit-code
+
   docker-login:
     desc: Push Docker image to public Dockerhub
     cmds:
