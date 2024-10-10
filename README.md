@@ -13,18 +13,9 @@ argocd login localhost:8080
 argocd account update-password
 ```
 
-## Install Node Labeler app
-```
-kubectl config set-context --current --namespace=argocd
-argocd app create node-labeler --repo https://github.com/stevancvetkovic/pcie-device-plugin --path node-labeler/dist/ --dest-server https://kubernetes.default.svc --dest-namespace builders
-argocd app set node-labeler --sync-policy automated
-
-argocd app get node-labeler
-argocd app sync node-labeler
-```
-
 ## Install PCIe Device Plugin app
 ```
+kubectl create namespace builders
 argocd app create pcie-device-plugin --repo https://github.com/stevancvetkovic/pcie-device-plugin --path templates --dest-server https://kubernetes.default.svc --dest-namespace builders
 argocd app set pcie-device-plugin --sync-policy automated
 ```
