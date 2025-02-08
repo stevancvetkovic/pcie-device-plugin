@@ -8,7 +8,8 @@
     "pre-commit@3.7.1",
     "zsh-autosuggestions@0.7.0",
     "kubebuilder@4.1.0",
-    "argocd@2.11.7"
+    "argocd@2.11.7",
+    "golangci-lint@1.63.4"
   ],
   "shell": {
     "init_hook": [

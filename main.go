@@ -137,7 +137,10 @@ func (dp *PCIDevicePlugin) Register(kubeletEndpoint string) error {
 }
 
 func (dp *PCIDevicePlugin) ListAndWatch(e *v1beta1.Empty, s v1beta1.DevicePlugin_ListAndWatchServer) error {
-	s.Send(&v1beta1.ListAndWatchResponse{Devices: dp.devices})
+	if err := s.Send(&v1beta1.ListAndWatchResponse{Devices: dp.devices}); err != nil {
+		log.Printf("Error sending ListAndWatch response: %v", err)
+		return err
+	}
 
 	for {
 		time.Sleep(10 * time.Second)
@@ -182,7 +185,11 @@ func main() {
 	if err := dp.Start(); err != nil {
 		log.Fatalf("Could not start device plugin: %v", err)
 	}
-	defer dp.Stop()
+	defer func() {
+		if err := dp.Stop(); err != nil {
+			log.Printf("Error stopping device plugin: %v", err)
+		}
+	}()
 	log.Println("Started device plugin")
 
 	if err := dp.Register(kubeletEndpoint); err != nil {
