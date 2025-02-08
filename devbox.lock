@@ -241,6 +241,54 @@
         }
       }
     },
+    "gopls@latest": {
+      "last_modified": "2025-01-19T08:16:51Z",
+      "resolved": "github:NixOS/nixpkgs/50165c4f7eb48ce82bd063e1fb8047a0f515f8ce#gopls",
+      "source": "devbox-search",
+      "version": "0.17.1",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/q2hdw5fzngsap4khf9h0aypxa9ryvvyh-gopls-0.17.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/q2hdw5fzngsap4khf9h0aypxa9ryvvyh-gopls-0.17.1"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/1lk59gw5xaxakd3zah2mwwjfz4s66dyj-gopls-0.17.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/1lk59gw5xaxakd3zah2mwwjfz4s66dyj-gopls-0.17.1"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/m462xbn8i4fc04ji8fbzk72285p1yxgm-gopls-0.17.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/m462xbn8i4fc04ji8fbzk72285p1yxgm-gopls-0.17.1"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/ramlxiidsvf0hh3jrfxyvqxnlm2q6gw4-gopls-0.17.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/ramlxiidsvf0hh3jrfxyvqxnlm2q6gw4-gopls-0.17.1"
+        }
+      }
+    },
     "kubebuilder@4.1.0": {
       "last_modified": "2024-08-14T11:41:26Z",
       "resolved": "github:NixOS/nixpkgs/0cb2fd7c59fed0cd82ef858cbcbdb552b9a33465#kubebuilder",
